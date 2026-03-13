@@ -1,0 +1,18 @@
+# include:
+#   - ../compose.pgsql.yaml
+
+services:
+  telepy:
+    build:
+      context: /home/daviuchoa/projetos/telesignal_project/telepy
+      dockerfile: /home/daviuchoa/projetos/telesignal_project/telepy/Dockerfile
+    networks:
+      - telesignal_network
+    # depends_on:
+    #   - db
+    volumes:
+      - /home/daviuchoa/projetos/telesignal_project/telepy:/app
+    command: [ "python", "-u", "src/stream_quotes.py" ]
+networks:
+  telesignal_network:
+    external: true

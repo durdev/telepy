@@ -22,33 +22,23 @@ async def stream_quotes():
     api = MetaApi(token, {'domain': domain})
 
     try:
-        print("EITA")
         account = await api.metatrader_account_api.get_account(account_id)
-
-        print("MACHO")
 
         if account.connection_status != 'CONNECTED':
             await account.wait_connected()
-
-        print("VEI")
 
         connection = account.get_streaming_connection()
 
         quote_listener = QuoteListener()
         connection.add_synchronization_listener(quote_listener)
 
-        print("LEGAL")
-
         await connection.connect()
-        print("BACANA")
         await connection.wait_synchronized()
-        print("DEMAIS")
 
         await subscribe_symbols(10, connection)
 
         while True:
             await asyncio.sleep(1)
-
     except Exception as err:
         print(api.format_error(err))
 
